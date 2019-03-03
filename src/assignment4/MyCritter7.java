@@ -1,23 +1,23 @@
 package assignment4;
 
 import assignment4.Critter.TestCritter;
+
 /**
  * Fighter, always fight when encounter other critters.
  */
 public class MyCritter7 extends TestCritter {
 
-	@Override
-	public void doTimeStep() {
-	}
+    @Override
+    public void doTimeStep() {
+    }
 
-	@Override
-	public boolean fight(String opponent) {
+    @Override
+    public boolean fight(String opponent) {
+        return true;
+    }
 
-		return true;
-	}
-
-	@Override
-	public String toString () {
-		return "7";
-	}
+    @Override
+    public String toString() {
+        return "7";
+    }
 }
