@@ -68,6 +68,16 @@ public abstract class Critter {
     public static void createCritter(String critter_class_name)
             throws InvalidCritterException {
         // TODO: Complete this method
+    	try {
+    		Critter k =  (Critter) Class.forName(myPackage+"."+critter_class_name).newInstance();
+    		k.energy= Params.START_ENERGY;
+    		k.x_coord= Critter.getRandomInt(Params.WORLD_WIDTH);
+    		k.y_coord= Critter.getRandomInt(Params.WORLD_HEIGHT);
+    		population.add(k);
+    	}
+    	catch(ClassNotFoundException|InstantiationException|IllegalAccessException exception){
+    		throw new InvalidCritterException(critter_class_name);
+    	}
     }
 
     /**
