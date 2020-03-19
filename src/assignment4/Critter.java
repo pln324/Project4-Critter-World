@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.lang.reflect.Constructor;
 
 /* 
  * See the PDF for descriptions of the methods and fields in this
@@ -69,13 +70,24 @@ public abstract class Critter {
             throws InvalidCritterException {
         // TODO: Complete this method
     	try {
-    		Critter k =  (Critter) Class.forName(myPackage+"."+critter_class_name).newInstance();
+			//Critter k = (Critter) Class.forName(myPackage+"."+critter_class_name).newInstance();  
+    		Class<?> newCri = Class.forName(myPackage+"."+critter_class_name);
+    		Critter k = (Critter) newCri.newInstance();
     		k.energy= Params.START_ENERGY;
     		k.x_coord= Critter.getRandomInt(Params.WORLD_WIDTH);
     		k.y_coord= Critter.getRandomInt(Params.WORLD_HEIGHT);
     		population.add(k);
     	}
-    	catch(ClassNotFoundException|InstantiationException|IllegalAccessException exception){
+    	catch(ClassNotFoundException e){
+    		throw new InvalidCritterException(critter_class_name);
+    	}
+    	catch(IllegalAccessException e){
+    		throw new InvalidCritterException(critter_class_name);
+    	}
+    	catch(InstantiationException e){
+    		throw new InvalidCritterException(critter_class_name);
+    	}
+    	catch(IllegalArgumentException e){
     		throw new InvalidCritterException(critter_class_name);
     	}
     }
@@ -91,7 +103,20 @@ public abstract class Critter {
     public static List<Critter> getInstances(String critter_class_name)
             throws InvalidCritterException {
         // TODO: Complete this method
-        return null;
+    	List<Critter> sameKind = new ArrayList<Critter>();
+    	Class<?> newCri;
+    	try {
+    		newCri = Class.forName(myPackage+"."+critter_class_name);
+    	}
+    	catch(ClassNotFoundException e) {
+    		throw new InvalidCritterException(critter_class_name);
+    	}
+    	for(Critter critter : population) {
+    		if(newCri.isInstance(critter)) {
+    			sameKind.add(critter);
+    		}
+    	}
+        return sameKind;
     }
 
     /**
@@ -99,6 +124,8 @@ public abstract class Critter {
      */
     public static void clearWorld() {
         // TODO: Complete this method
+    	population.clear();
+    	babies.clear();
     }
 
     public static void worldTimeStep() {
@@ -106,7 +133,38 @@ public abstract class Critter {
     }
 
     public static void displayWorld() {
-        // TODO: Complete this method
+        //set up the border
+    	String[][] world = new String[Params.WORLD_HEIGHT+2][Params.WORLD_WIDTH+2];
+    	world[0][0]="+";
+    	world[0][Params.WORLD_WIDTH+1]="+";
+    	world[Params.WORLD_HEIGHT+1][0]="+";
+    	world[Params.WORLD_HEIGHT+1][Params.WORLD_WIDTH+1]="+";
+    	
+    	for(int i=1;i<Params.WORLD_HEIGHT+1;i++) {
+    		world[i][0]="|";
+    		world[i][Params.WORLD_WIDTH+1]="|";
+    	}
+    	for(int i=1; i<Params.WORLD_WIDTH+1; i++) {
+    		world[0][i] = "-";
+    		world[Params.WORLD_HEIGHT+1][i]="-";
+    	}
+    	for(Critter critter: population) {
+    		world[critter.x_coord+1][critter.y_coord+1]=critter.toString();
+    	}
+    	for(int i=1;i<Params.WORLD_HEIGHT+1;i++) {
+    		for(int j=1;j<Params.WORLD_WIDTH+1;j++) {
+    			world[i][j]=" ";
+    		}
+    	}
+    	for(int i=0;i<population.size();i++) {
+    		world[population.get(i).y_coord+1][population.get(i).x_coord+1] = population.get(i).toString();
+    	}
+    	for(int i=0;i<Params.WORLD_HEIGHT+2;i++) {
+    		for(int j=0;j<Params.WORLD_WIDTH+2;j++) {
+    			System.out.print(world[i][j]);
+    		}
+    		System.out.println();
+    	}
     }
 
     /**
