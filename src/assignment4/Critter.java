@@ -148,6 +148,7 @@ public abstract class Critter {
     		world[0][i] = "-";
     		world[Params.WORLD_HEIGHT+1][i]="-";
     	}
+    	//set each cell based on the location of the critter
     	for(Critter critter: population) {
     		world[critter.x_coord+1][critter.y_coord+1]=critter.toString();
     	}
@@ -192,7 +193,8 @@ public abstract class Critter {
     public abstract void doTimeStep();
 
     public abstract boolean fight(String oponent);
-
+    
+    private boolean hasMoved;
     /* a one-character long string that visually depicts your critter
      * in the ASCII interface */
     public String toString() {
@@ -205,6 +207,43 @@ public abstract class Critter {
 
     protected final void walk(int direction) {
         // TODO: Complete this method
+    	this.energy -= Params.WALK_ENERGY_COST;
+    	if(hasMoved) {
+    		return;			//can not move twice in the same time step
+    	}else {
+        	switch(direction) {
+        	case 0:
+        		this.x_coord +=1;	//right
+        		break;
+        	case 1:
+        		this.x_coord +=1;	//diagonally up right
+        		this.y_coord -=1;
+        		break;
+        	case 2:
+        		this.y_coord -=1;	//up
+        		break;
+        	case 3:
+        		this.x_coord -=1;	//diagonally up left
+        		this.y_coord -=1;
+        		break;
+        	case 4:
+        		this.x_coord -=1;   //left
+        		break;
+        	case 5:
+        		this.x_coord -=1;	//diagonally down left
+        		this.y_coord +=1;
+        		break;
+        	case 6:
+        		this.y_coord +=1; 	//down
+        		break;
+        	case 7:
+        		this.x_coord +=1;	//diagonally down right
+        		this.y_coord +=1;
+        		break;
+        	}
+        	hasMoved = true;
+    	}
+
     }
 
     protected final void run(int direction) {
