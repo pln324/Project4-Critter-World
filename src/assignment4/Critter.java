@@ -150,16 +150,16 @@ public abstract class Critter {
     	}
     	//set each cell based on the location of the critter
     	for(Critter critter: population) {
-    		world[critter.x_coord+1][critter.y_coord+1]=critter.toString();
+    		world[critter.x_coord+1][critter.y_coord+1]=critter.toString();  
     	}
     	for(int i=1;i<Params.WORLD_HEIGHT+1;i++) {
     		for(int j=1;j<Params.WORLD_WIDTH+1;j++) {
     			world[i][j]=" ";
     		}
     	}
-    	for(int i=0;i<population.size();i++) {
+    	/*for(int i=0;i<population.size();i++) {
     		world[population.get(i).y_coord+1][population.get(i).x_coord+1] = population.get(i).toString();
-    	}
+    	}*/
     	for(int i=0;i<Params.WORLD_HEIGHT+2;i++) {
     		for(int j=0;j<Params.WORLD_WIDTH+2;j++) {
     			System.out.print(world[i][j]);
@@ -241,6 +241,20 @@ public abstract class Critter {
         		this.y_coord +=1;
         		break;
         	}
+        	
+        	//wrap around cases
+        	if(this.x_coord>Params.WORLD_WIDTH-1) {				
+        		this.x_coord -= Params.WORLD_WIDTH;
+        	}
+        	if(this.x_coord<0) {
+        		this.x_coord += Params.WORLD_WIDTH;
+        	}
+        	if(this.y_coord>Params.WORLD_HEIGHT-1) {
+        		this.y_coord -= Params.WORLD_HEIGHT;
+        	}
+        	if(this.y_coord<0) {
+        		this.y_coord += Params.WORLD_HEIGHT;
+        	}
         	hasMoved = true;
     	}
 
@@ -248,11 +262,70 @@ public abstract class Critter {
 
     protected final void run(int direction) {
         // TODO: Complete this method
-
+    	this.energy -= Params.RUN_ENERGY_COST;
+    	if(hasMoved) {
+    		return;			//can not move twice in the same time step
+    	}else {
+        	switch(direction) {
+        	case 0:
+        		this.x_coord +=2;	//right
+        		break;
+        	case 1:
+        		this.x_coord +=2;	//diagonally up right
+        		this.y_coord -=2;
+        		break;
+        	case 2:
+        		this.y_coord -=2;	//up
+        		break;
+        	case 3:
+        		this.x_coord -=2;	//diagonally up left
+        		this.y_coord -=2;
+        		break;
+        	case 4:
+        		this.x_coord -=2;   //left
+        		break;
+        	case 5:
+        		this.x_coord -=2;	//diagonally down left
+        		this.y_coord +=2;
+        		break;
+        	case 6:
+        		this.y_coord +=2; 	//down
+        		break;
+        	case 7:
+        		this.x_coord +=2;	//diagonally down right
+        		this.y_coord +=2;
+        		break;
+        	}
+        	
+        	//wrap around cases
+        	if(this.x_coord>Params.WORLD_WIDTH-1) {				
+        		this.x_coord -= Params.WORLD_WIDTH;
+        	}
+        	if(this.x_coord<0) {
+        		this.x_coord += Params.WORLD_WIDTH;
+        	}
+        	if(this.y_coord>Params.WORLD_HEIGHT-1) {
+        		this.y_coord -= Params.WORLD_HEIGHT;
+        	}
+        	if(this.y_coord<0) {
+        		this.y_coord += Params.WORLD_HEIGHT;
+        	}
+        	hasMoved = true;
+    	}
     }
 
     protected final void reproduce(Critter offspring, int direction) {
         // TODO: Complete this method
+    	if(this.energy < Params.MIN_REPRODUCE_ENERGY) {
+    		return;
+    	}
+    	offspring.energy = this.energy/2;
+    	this.energy = (this.energy+1)/2;
+    	offspring.x_coord = this.x_coord;
+    	offspring.y_coord = this.y_coord;
+    	offspring.walk(direction);
+    	offspring.energy +=1; 				//no energy should be deducted for newborn
+    	babies.add(offspring);
     }
 
     /**
