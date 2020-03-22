@@ -14,6 +14,7 @@
 
 package assignment4;
 
+import java.awt.List;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -97,5 +98,110 @@ public class Main {
 
     private static void commandInterpreter(Scanner kb) {
         //TODO Implement this method
+    	boolean done = false;
+    	
+    	while(!done) {
+    		System.out.print("critters> ");
+    		String[] input = kb.nextLine().split(" "); //separate user input to parts
+    		
+    		if(input[0].equals("quit")) {
+    			if(input.length>1) {
+    				System.out.println("error processing: " + input);
+    			}
+    			else {
+    				done = true;
+    			}
+    		}
+    		else if(input[0].equals("show")){
+    			if(input.length>1) {
+    				System.out.println("error processing: " + input);
+    			}
+    			else {
+    				Critter.displayWorld();
+    			}
+    		}
+    		else if(input[0].equals("step")) {
+    			if(input.length>2) {
+    				System.out.println("error processing: "+input);
+    			}
+    			else {
+    				if(input.length==1) {
+    					Critter.worldTimeStep();
+    				}
+    				else {
+    					try {
+    						int loop = Integer.parseInt(input[1]);
+    						for(int i=0;i<loop;i++) {
+    						Critter.worldTimeStep();
+    						}
+    					}
+    						catch(Exception e) {
+    							System.out.println("error processing: "+input);
+    						}
+    				}
+    			}
+    		}
+    		else if(input[0].equals("seed")) {
+    			if(input.length>2) {
+    				System.out.println("error processing: "+input);
+    			}
+    			else {
+    				try {
+    					long seed = Long.parseLong(input[1]);
+    					Critter.setSeed(seed);
+    				}
+    				catch(Exception e) {
+    					System.out.println("error processing: "+input);
+    				}
+    			}
+    		}
+    		else if(input[0].equals("create")) {
+    			if(input.length>3) {
+    				System.out.println("error processing: "+input);
+    			}
+    			else {
+    				try {
+    					if(input.length==2) {
+    						Critter.createCritter(input[1]);
+    					}
+    					else if(input.length == 3) {
+    						int loop = Integer.parseInt(input[2]);
+    						for(int i=0;i<loop;i++) {
+    							Critter.createCritter(input[1]);
+    						}
+    					}
+    				}
+    				catch(Exception e) {
+    					System.out.println("error processing: "+input);
+    				}
+    			}
+    		}
+    		else if(input[0].equals("stats")) {
+    			if(input.length==2) {
+    				try {
+    					java.util.List<Critter> k = Critter.getInstances(input[1]);
+    					java.lang.reflect.Method stat = Class.forName(myPackage +"."+input[1]).getMethod("stat", List.class);
+    					stat.invoke(Class.forName(myPackage +"."+input[1]), k);
+    				}
+    				catch(Exception e) {
+    					System.out.println("error processing: "+input);
+    			}
+    		}
+    		    else {
+    		    	System.out.println("error processing: "+input);
+    			}
+    		}
+    		else if(input[0].equals("clear")) {
+    			if(input.length!=1) {
+    				System.out.println("error processing: "+input);
+    			}
+    			else {
+    				Critter.clearWorld();
+    			}
+    		}
+    		else {
+    			System.out.println("error processing: "+input);
+    		}
+    	}
     }
 }
