@@ -134,6 +134,56 @@ public abstract class Critter {
 
     public static void worldTimeStep() {
         // TODO: Complete this method
+    	for (int i=0; i<population.size(); i++) {
+    		population.get(i).doTimeStep();
+    	}
+    	for (int i=0; i<population.size(); i++) {
+    		for (int j=i+1; j<population.size(); j++) {
+    			if (population.get(i).x_coord == population.get(j).x_coord && population.get(i).y_coord == population.get(j).y_coord) {
+    				doEncounter(population.get(i), population.get(j));
+    			}
+    		}
+    	}
+    	for (int i=0; i<population.size(); i++) {
+    		population.get(i).energy -= Params.REST_ENERGY_COST;
+    		if (population.get(i).energy <= 0) {
+    			population.remove(i);
+    			i--;
+    		}
+    	}
+    	for (int i=0; i<Params.REFRESH_CLOVER_COUNT; i++) {
+    		try {
+				createCritter("Clover");
+			} catch (InvalidCritterException e) {
+				e.printStackTrace();
+			}
+    	}
+    	population.addAll(babies);
+    	babies.clear();
+    }
+    
+    private static void doEncounter(Critter a, Critter b) {
+    	boolean A = a.fight(b.toString());
+    	boolean B = b.fight(a.toString());
+    	int fightA = 0;
+    	int fightB = 0;
+    	if(!A || !B) {
+    		if(a.x_coord != b.x_coord || a.y_coord != b.y_coord) {
+    			return;
+    		}
+    		else {
+    			if(A) fightA = a.getRandomInt(a.energy);
+    			if(B) fightB = b.getRandomInt(b.energy);
+    			if (fightA>fightB) {
+    				a.energy = a.energy + b.energy/2;
+    				b.energy = 0;
+    			}
+    			else {
+    				b.energy = b.energy + a.energy/2;
+    				a.energy = 0;
+    			}
+    		}
+    	}
     }
 
     public static void displayWorld() {
