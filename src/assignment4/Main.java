@@ -176,9 +176,8 @@ public class Main {
     						}
     					}
     				}
-    				catch(Exception e) {
+    				catch(InvalidCritterException |NumberFormatException|NoClassDefFoundError e) {
     					System.out.println("error processing: "+in);
-    					System.out.println(input[1]);
     				}
     			}
     		}
