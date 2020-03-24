@@ -146,6 +146,7 @@ public abstract class Critter {
     	}
     	for (int i=0; i<population.size(); i++) {
     		population.get(i).energy -= Params.REST_ENERGY_COST;
+    		population.get(i).hasMoved = false;
     		if (population.get(i).energy <= 0) {
     			population.remove(i);
     			i--;
@@ -245,7 +246,7 @@ public abstract class Critter {
 
     public abstract boolean fight(String oponent);
     
-    private boolean hasMoved;
+    private static boolean hasMoved=false;
     /* a one-character long string that visually depicts your critter
      * in the ASCII interface */
     public String toString() {

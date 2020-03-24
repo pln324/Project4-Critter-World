@@ -191,18 +191,18 @@ public class Main {
     				try {
     					lCritter = Critter.getInstances(inClass);
     					statClass = Class.forName(myPackage+"."+inClass);
-    					System.out.println(statClass);
-    					System.out.println("haha"+statClass.getMethod("runStats", List.class));
     					java.lang.reflect.Method runStats = statClass.getMethod("runStats", List.class);
     					runStats.invoke(statClass, lCritter);
-    					System.out.println("haha3");
+
     				}
-    				catch(InvalidCritterException|NullPointerException|SecurityException|IllegalAccessException|InvocationTargetException |ClassNotFoundException|NoClassDefFoundError e) {
+    				catch(InvalidCritterException|SecurityException|IllegalAccessException|InvocationTargetException |ClassNotFoundException|NoClassDefFoundError e) {
     					System.out.println("error processing: "+in);
-    					System.out.println("haha");
     			}
     				catch(NoSuchMethodException e) {
     					Critter.runStats(lCritter);
+    				}
+    				catch(NullPointerException e) {
+    					System.out.println("error processing: "+in);
     				}
     		}
     		    else {
