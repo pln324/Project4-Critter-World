@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /* 
  * See the PDF for descriptions of the methods and fields in this
@@ -68,28 +69,31 @@ public abstract class Critter {
      */
     public static void createCritter(String critter_class_name)
             throws InvalidCritterException {
+    	
+    	Class<?> myCritter = null;
+		Constructor<?> constructor = null;
+		Object instanceOfMyCritter = null;
+
+		try {
+			myCritter = Class.forName(myPackage+"."+critter_class_name); 	// Class object of specified name
+		} catch (ClassNotFoundException e) {
+			throw new InvalidCritterException(critter_class_name);
+		}
+		try {
+			constructor = myCritter.getConstructor();		// No-parameter constructor object
+			instanceOfMyCritter = constructor.newInstance();	// Create new object using constructor
+		} catch (InstantiationException|IllegalAccessException|IllegalArgumentException|NoSuchMethodException e) {
+			throw new InvalidCritterException(critter_class_name);
+		}
+		catch(InvocationTargetException e) {
+			throw new InvalidCritterException(critter_class_name);
+		}
+		Critter me = (Critter)instanceOfMyCritter;	
+		me.energy = Params.START_ENERGY;
+		me.x_coord = Critter.getRandomInt(Params.WORLD_WIDTH-1);
+		me.y_coord = Critter.getRandomInt(Params.WORLD_HEIGHT-1);
+		population.add(me);
         // TODO: Complete this method
-    	try {
-			//Critter k = (Critter) Class.forName(myPackage+"."+critter_class_name).newInstance();  
-    		Class<?> newCri = Class.forName(myPackage+"."+critter_class_name);
-    		Critter k = (Critter) newCri.newInstance();
-    		k.energy= Params.START_ENERGY;
-    		k.x_coord= Critter.getRandomInt(Params.WORLD_WIDTH);
-    		k.y_coord= Critter.getRandomInt(Params.WORLD_HEIGHT);
-    		population.add(k);
-    	}
-    	catch(ClassNotFoundException e){
-    		throw new InvalidCritterException(critter_class_name);
-    	}
-    	catch(IllegalAccessException e){
-    		throw new InvalidCritterException(critter_class_name);
-    	}
-    	catch(InstantiationException e){
-    		throw new InvalidCritterException(critter_class_name);
-    	}
-    	catch(IllegalArgumentException e){
-    		throw new InvalidCritterException(critter_class_name);
-    	}
     }
 
     /**
@@ -149,17 +153,14 @@ public abstract class Critter {
     		world[Params.WORLD_HEIGHT+1][i]="-";
     	}
     	//set each cell based on the location of the critter
-    	for(Critter critter: population) {
-    		world[critter.x_coord+1][critter.y_coord+1]=critter.toString();  
-    	}
     	for(int i=1;i<Params.WORLD_HEIGHT+1;i++) {
     		for(int j=1;j<Params.WORLD_WIDTH+1;j++) {
     			world[i][j]=" ";
     		}
     	}
-    	/*for(int i=0;i<population.size();i++) {
+    	for(int i=0;i<population.size();i++) {
     		world[population.get(i).y_coord+1][population.get(i).x_coord+1] = population.get(i).toString();
-    	}*/
+    	}
     	for(int i=0;i<Params.WORLD_HEIGHT+2;i++) {
     		for(int j=0;j<Params.WORLD_WIDTH+2;j++) {
     			System.out.print(world[i][j]);

@@ -21,6 +21,11 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 /*
  * Usage: java <pkg name>.Main <input file> test input file is
  * optional.  If input file is specified, the word 'test' is optional.
@@ -96,17 +101,17 @@ public class Main {
 
     /* Do not alter the code above for your submission. */
 
-    private static void commandInterpreter(Scanner kb) {
+    private static void commandInterpreter(Scanner kb){
         //TODO Implement this method
     	boolean done = false;
-    	
+    	String in = "";
     	while(!done) {
-    		System.out.print("critters> ");
-    		String[] input = kb.nextLine().split(" "); //separate user input to parts
-    		
+    		System.out.print("critters>");
+    		in = kb.nextLine();
+    		String[] input = in.split(" "); //separate user input to parts	
     		if(input[0].equals("quit")) {
     			if(input.length>1) {
-    				System.out.println("error processing: " + input);
+    				System.out.println("error processing: " + in);
     			}
     			else {
     				done = true;
@@ -114,7 +119,7 @@ public class Main {
     		}
     		else if(input[0].equals("show")){
     			if(input.length>1) {
-    				System.out.println("error processing: " + input);
+    				System.out.println("error processing: " + in);
     			}
     			else {
     				Critter.displayWorld();
@@ -122,7 +127,7 @@ public class Main {
     		}
     		else if(input[0].equals("step")) {
     			if(input.length>2) {
-    				System.out.println("error processing: "+input);
+    				System.out.println("error processing: "+in);
     			}
     			else {
     				if(input.length==1) {
@@ -136,14 +141,14 @@ public class Main {
     						}
     					}
     						catch(Exception e) {
-    							System.out.println("error processing: "+input);
+    							System.out.println("error processing: "+in);
     						}
     				}
     			}
     		}
     		else if(input[0].equals("seed")) {
     			if(input.length>2) {
-    				System.out.println("error processing: "+input);
+    				System.out.println("error processing: "+ in);
     			}
     			else {
     				try {
@@ -151,13 +156,13 @@ public class Main {
     					Critter.setSeed(seed);
     				}
     				catch(Exception e) {
-    					System.out.println("error processing: "+input);
+    					System.out.println("error processing: "+in);
     				}
     			}
     		}
     		else if(input[0].equals("create")) {
-    			if(input.length>3) {
-    				System.out.println("error processing: "+input);
+    			if(input.length>3|input.length<2) {
+    				System.out.println("error processing: "+in);
     			}
     			else {
     				try {
@@ -172,35 +177,49 @@ public class Main {
     					}
     				}
     				catch(Exception e) {
-    					System.out.println("error processing: "+input);
+    					System.out.println("error processing: "+in);
+    					System.out.println(input[1]);
     				}
     			}
     		}
     		else if(input[0].equals("stats")) {
     			if(input.length==2) {
+    				String inClass = input[1];
+    				java.util.List<Critter> lCritter = null;
+    				Class<?> statClass = null;
+    			
+
     				try {
-    					java.util.List<Critter> k = Critter.getInstances(input[1]);
-    					java.lang.reflect.Method stat = Class.forName(myPackage +"."+input[1]).getMethod("stat", List.class);
-    					stat.invoke(Class.forName(myPackage +"."+input[1]), k);
+    					lCritter = Critter.getInstances(inClass);
+    					statClass = Class.forName(myPackage+"."+inClass);
+    					System.out.println(statClass);
+    					System.out.println("haha"+statClass.getMethod("runStats", List.class));
+    					java.lang.reflect.Method runStats = statClass.getMethod("runStats", List.class);
+    					runStats.invoke(statClass, lCritter);
+    					System.out.println("haha3");
     				}
-    				catch(Exception e) {
-    					System.out.println("error processing: "+input);
+    				catch(InvalidCritterException|NullPointerException|SecurityException|IllegalAccessException|InvocationTargetException |ClassNotFoundException e) {
+    					System.out.println("error processing: "+in);
+    					System.out.println("haha");
     			}
+    				catch(NoSuchMethodException e) {
+    					Critter.runStats(lCritter);
+    				}
     		}
     		    else {
-    		    	System.out.println("error processing: "+input);
+    		    	System.out.println("error processing: "+in);
     			}
     		}
     		else if(input[0].equals("clear")) {
     			if(input.length!=1) {
-    				System.out.println("error processing: "+input);
+    				System.out.println("error processing: "+in);
     			}
     			else {
     				Critter.clearWorld();
     			}
     		}
     		else {
-    			System.out.println("error processing: "+input);
+    			System.out.println("error processing: "+in);
     		}
     	}
     }
