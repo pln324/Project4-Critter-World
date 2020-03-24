@@ -197,7 +197,7 @@ public class Main {
     					runStats.invoke(statClass, lCritter);
     					System.out.println("haha3");
     				}
-    				catch(InvalidCritterException|NullPointerException|SecurityException|IllegalAccessException|InvocationTargetException |ClassNotFoundException e) {
+    				catch(InvalidCritterException|NullPointerException|SecurityException|IllegalAccessException|InvocationTargetException |ClassNotFoundException|NoClassDefFoundError e) {
     					System.out.println("error processing: "+in);
     					System.out.println("haha");
     			}
