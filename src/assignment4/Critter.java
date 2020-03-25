@@ -164,29 +164,53 @@ public abstract class Critter {
     }
     
     private static void doEncounter(Critter a, Critter b) {
+    	int currentx = a.x_coord;
+    	int currenty = b.y_coord;
     	boolean A = a.fight(b.toString());
     	boolean B = b.fight(a.toString());
     	int fightA = 0;
     	int fightB = 0;
-    	if(!A || !B) {
-    		if(a.x_coord != b.x_coord || a.y_coord != b.y_coord) {
+    		
+    	if(!A) {
+    		for (int i=0; i<population.size(); i++) {
+    			if(collision(a, population.get(i))) {
+    				a.x_coord = currentx;
+    				a.y_coord = currenty;
+    				i = population.size();
+   				}
+  			}
+  		}
+    	if(!B) {
+   			for (int i=0; i<population.size(); i++) {
+  				if(collision(b, population.get(i))) {
+ 					b.x_coord = currentx;
+   					b.y_coord = currenty;
+  					i = population.size();
+  				}
+  			}
+  		}
+    	if(a.x_coord != b.x_coord || a.y_coord != b.y_coord) {
     			return;
-    		}
-    		else {
-    			if(A) fightA = a.getRandomInt(a.energy);
-    			if(B) fightB = b.getRandomInt(b.energy);
-    			if (fightA>fightB) {
-    				a.energy = a.energy + b.energy/2;
-    				b.energy = 0;
-    			}
-    			else {
-    				b.energy = b.energy + a.energy/2;
-    				a.energy = 0;
-    			}
+    	}
+    	else {
+    		if(A) fightA = a.getRandomInt(a.energy);
+    		if(B) fightB = b.getRandomInt(b.energy);
+   			if (fightA>fightB) {
+   				a.energy = a.energy + b.energy/2;
+   				b.energy = 0;
+   			}
+   			else {
+   				b.energy = b.energy + a.energy/2;
+    			a.energy = 0;
     		}
     	}
     }
 
+    private static boolean collision(Critter a, Critter b) {
+    	if (a.x_coord == b.x_coord && a.y_coord == b.y_coord && b.energy>0) return true;
+    	else return false;
+    }
+    
     public static void displayWorld() {
         //set up the border
     	String[][] world = new String[Params.WORLD_HEIGHT+2][Params.WORLD_WIDTH+2];
