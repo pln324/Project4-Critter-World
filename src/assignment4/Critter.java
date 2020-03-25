@@ -172,7 +172,7 @@ public abstract class Critter {
     		
     	if(!A) {
     		for (int i=0; i<population.size(); i++) {
-    			if(collision(a, population.get(i))) {
+    			if(collision(a, population.get(i)) && !a.equals(population.get(i))) {
     				a.x_coord = currentx;
     				a.y_coord = currenty;
     				i = population.size();
@@ -181,7 +181,7 @@ public abstract class Critter {
   		}
     	if(!B) {
    			for (int i=0; i<population.size(); i++) {
-  				if(collision(b, population.get(i))) {
+  				if(collision(b, population.get(i)) && !b.equals(population.get(i))) {
  					b.x_coord = currentx;
    					b.y_coord = currenty;
   					i = population.size();
