@@ -137,7 +137,7 @@ public abstract class Critter {
     	for (int i=0; i<population.size(); i++) {
     		population.get(i).doTimeStep();
     	}
-    	for (int i=0; i<population.size(); i++) {
+    	for (int i=0; i<population.size()-1; i++) {
     		for (int j=i+1; j<population.size(); j++) {
     			if (population.get(i).x_coord == population.get(j).x_coord && population.get(i).y_coord == population.get(j).y_coord) {
     				doEncounter(population.get(i), population.get(j));
@@ -146,9 +146,9 @@ public abstract class Critter {
     	}
     	for (int i=0; i<population.size(); i++) {
     		population.get(i).energy -= Params.REST_ENERGY_COST;
-    		population.get(i).hasMoved = false;
     		if (population.get(i).energy <= 0) {
     			population.remove(i);
+    			i--;
     		}
     	}
     	for (int i=0; i<Params.REFRESH_CLOVER_COUNT; i++) {
@@ -192,8 +192,8 @@ public abstract class Critter {
     			return;
     	}
     	else {
-    		if(A) fightA = a.getRandomInt(a.energy);
-    		if(B) fightB = b.getRandomInt(b.energy);
+    		if(A&&a.energy>0) fightA = Math.abs(getRandomInt(a.energy));
+    		if(B&&b.energy>0) fightB = Math.abs(getRandomInt(b.energy));
    			if (fightA>fightB) {
    				a.energy = a.energy + b.energy/2;
    				b.energy = 0;
@@ -234,6 +234,18 @@ public abstract class Critter {
     	}
     	for(int i=0;i<population.size();i++) {
     		world[population.get(i).y_coord+1][population.get(i).x_coord+1] = population.get(i).toString();
+    	}
+    	for(int i=0;i<population.size();i++) {
+    		for(int j=i+1;j<population.size();j++) {
+    			if((population.get(i).x_coord==population.get(j).x_coord&&population.get(i).y_coord == population.get(j).y_coord)) {
+    				if(population.get(i).getEnergy()>population.get(j).energy) {
+    					world[population.get(i).y_coord+1][population.get(i).x_coord+1] = population.get(i).toString();
+    				}
+    				else {
+    					world[population.get(i).y_coord+1][population.get(i).x_coord+1] = population.get(j).toString();
+    				}
+    			}
+    		}
     	}
     	for(int i=0;i<Params.WORLD_HEIGHT+2;i++) {
     		for(int j=0;j<Params.WORLD_WIDTH+2;j++) {
@@ -283,9 +295,7 @@ public abstract class Critter {
     protected final void walk(int direction) {
         // TODO: Complete this method
     	this.energy -= Params.WALK_ENERGY_COST;
-    	if(hasMoved) {
-    		return;			//can not move twice in the same time step
-    	}else {
+
         	switch(direction) {
         	case 0:
         		this.x_coord +=1;	//right
@@ -330,17 +340,14 @@ public abstract class Critter {
         	if(this.y_coord<0) {
         		this.y_coord += Params.WORLD_HEIGHT;
         	}
-        	hasMoved = true;
     	}
 
-    }
+    
 
     protected final void run(int direction) {
         // TODO: Complete this method
     	this.energy -= Params.RUN_ENERGY_COST;
-    	if(hasMoved) {
-    		return;			//can not move twice in the same time step
-    	}else {
+
         	switch(direction) {
         	case 0:
         		this.x_coord +=2;	//right
@@ -387,7 +394,7 @@ public abstract class Critter {
         	}
         	hasMoved = true;
     	}
-    }
+    
 
     protected final void reproduce(Critter offspring, int direction) {
         // TODO: Complete this method

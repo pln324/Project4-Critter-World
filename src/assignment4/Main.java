@@ -129,22 +129,22 @@ public class Main {
     			if(input.length>2) {
     				System.out.println("error processing: "+in);
     			}
-    			else {
-    				if(input.length==1) {
+    			
+    			else if(input.length==1) {
     					Critter.worldTimeStep();
     				}
-    				else {
+    			else if(input.length==2){
     					try {
     						int loop = Integer.parseInt(input[1]);
     						for(int i=0;i<loop;i++) {
     						Critter.worldTimeStep();
     						}
     					}
-    						catch(IllegalArgumentException e) {
+    						catch(NullPointerException|NumberFormatException e) {
     							System.out.println("error processing: "+in);
     						}
     				}
-    			}
+    			
     		}
     		else if(input[0].equals("seed")) {
     			if(input.length>2) {

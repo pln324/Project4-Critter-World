@@ -85,7 +85,7 @@ public class Goblin extends Critter {
                 + "% right   ");
         System.out.print(
                 total_left / (GENE_TOTAL * 0.01 * goblins.size())
-                + "% left   ");
+                + "% left");
         System.out.println();
     }
 }
