@@ -14,7 +14,7 @@
 
 package assignment4;
 
-import java.awt.List;
+import java.util.List;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -186,14 +186,14 @@ public class Main {
     				String inClass = input[1];
     				java.util.List<Critter> lCritter = null;
     				Class<?> statClass = null;
-    			
+    				String name = "runStats";
 
     				try {
     					lCritter = Critter.getInstances(inClass);
+    					Class<?>[] paramTypes = {List.class};
     					statClass = Class.forName(myPackage+"."+inClass);
-    					java.lang.reflect.Method runStats = statClass.getMethod("runStats", List.class);
+    					Method runStats = statClass.getMethod(name, paramTypes);
     					runStats.invoke(statClass, lCritter);
-
     				}
     				catch(InvalidCritterException|SecurityException|IllegalAccessException|InvocationTargetException |ClassNotFoundException|NoClassDefFoundError e) {
     					System.out.println("error processing: "+in);
