@@ -90,8 +90,8 @@ public abstract class Critter {
 		}
 		Critter me = (Critter)instanceOfMyCritter;	
 		me.energy = Params.START_ENERGY;
-		me.x_coord = Critter.getRandomInt(Params.WORLD_WIDTH-1);
-		me.y_coord = Critter.getRandomInt(Params.WORLD_HEIGHT-1);
+		me.x_coord = Critter.getRandomInt(Params.WORLD_WIDTH);
+		me.y_coord = Critter.getRandomInt(Params.WORLD_HEIGHT);
 		population.add(me);
         // TODO: Complete this method
     }
