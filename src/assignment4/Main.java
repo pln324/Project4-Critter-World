@@ -140,7 +140,7 @@ public class Main {
     						Critter.worldTimeStep();
     						}
     					}
-    						catch(Exception e) {
+    						catch(IllegalArgumentException e) {
     							System.out.println("error processing: "+in);
     						}
     				}

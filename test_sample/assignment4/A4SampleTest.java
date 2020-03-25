@@ -54,7 +54,7 @@ public class A4SampleTest {
 
         // Uncomment Following Codeblock to test
         // Remove final keyword from Params.java
-
+    	//haha
         Params.WORLD_WIDTH = 20;
         Params.WORLD_HEIGHT = 20;
         Params.WALK_ENERGY_COST = 2;
