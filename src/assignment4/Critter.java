@@ -149,7 +149,6 @@ public abstract class Critter {
     		population.get(i).hasMoved = false;
     		if (population.get(i).energy <= 0) {
     			population.remove(i);
-    			i--;
     		}
     	}
     	for (int i=0; i<Params.REFRESH_CLOVER_COUNT; i++) {
