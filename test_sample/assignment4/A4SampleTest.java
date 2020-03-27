@@ -54,7 +54,7 @@ public class A4SampleTest {
 
         // Uncomment Following Codeblock to test
         // Remove final keyword from Params.java
-    	//haha
+
         Params.WORLD_WIDTH = 20;
         Params.WORLD_HEIGHT = 20;
         Params.WALK_ENERGY_COST = 2;
@@ -80,7 +80,7 @@ public class A4SampleTest {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        String text = scanner.useDelimiter("\\A").next().trim();
+        String text = cleanString(scanner.useDelimiter("\\A").next());
         String output = cleanString(outContent.toString());
         scanner.close();
 
@@ -128,7 +128,7 @@ public class A4SampleTest {
 
             e.printStackTrace();
         }
-        String text = scanner.useDelimiter("\\A").next().trim();
+        String text = cleanString(scanner.useDelimiter("\\A").next());
         String output = cleanString(outContent.toString());
         assertTrue(text.contains(output));
 
@@ -172,7 +172,7 @@ public class A4SampleTest {
             e.printStackTrace();
         }
 
-        String text = scanner.useDelimiter("\\A").next().trim();
+        String text = cleanString(scanner.useDelimiter("\\A").next());
         String output = cleanString(outContent.toString());
         scanner.close();
         assertEquals(text, output);
@@ -215,7 +215,7 @@ public class A4SampleTest {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        String text = scanner.useDelimiter("\\A").next().trim();
+        String text = cleanString(scanner.useDelimiter("\\A").next());
         String output = cleanString(outContent.toString());
         scanner.close();
         assertEquals(text, output);
