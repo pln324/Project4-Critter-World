@@ -294,41 +294,6 @@ public abstract class Critter {
     }
 
     protected final void walk(int direction) {
-<<<<<<< HEAD
-        // TODO: Complete this method
-    	this.energy -= Params.WALK_ENERGY_COST;
-    		
-        	switch(direction) {
-        	case 0:
-        		this.x_coord +=1;	//right
-        		break;
-        	case 1:
-        		this.x_coord +=1;	//diagonally up right
-        		this.y_coord -=1;
-        		break;
-        	case 2:
-        		this.y_coord -=1;	//up
-        		break;
-        	case 3:
-        		this.x_coord -=1;	//diagonally up left
-        		this.y_coord -=1;
-        		break;
-        	case 4:
-        		this.x_coord -=1;   //left
-        		break;
-        	case 5:
-        		this.x_coord -=1;	//diagonally down left
-        		this.y_coord +=1;
-        		break;
-        	case 6:
-        		this.y_coord +=1; 	//down
-        		break;
-        	case 7:
-        		this.x_coord +=1;	//diagonally down right
-        		this.y_coord +=1;
-        		break;
-        	}
-=======
         if (hasMoved == false) {
         	this.energy -= Params.WALK_ENERGY_COST;
 
@@ -362,7 +327,6 @@ public abstract class Critter {
         			this.y_coord +=1;
         			break;
         		}
->>>>>>> 96f06b20c1b3a543faa2b78166586e70816e1688
         	
         		//wrap around cases
         		if(this.x_coord>Params.WORLD_WIDTH-1) {				
