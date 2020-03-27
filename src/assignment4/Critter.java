@@ -135,6 +135,7 @@ public abstract class Critter {
     public static void worldTimeStep() {
         // TODO: Complete this method
     	for (int i=0; i<population.size(); i++) {
+    		population.get(i).hasMoved = false;
     		population.get(i).doTimeStep();
     	}
     	for (int i=0; i<population.size()-1; i++) {
@@ -281,7 +282,7 @@ public abstract class Critter {
 
     public abstract boolean fight(String oponent);
     
-    private static boolean hasMoved=false;
+    private boolean hasMoved=false;
     /* a one-character long string that visually depicts your critter
      * in the ASCII interface */
     public String toString() {
@@ -293,6 +294,7 @@ public abstract class Critter {
     }
 
     protected final void walk(int direction) {
+<<<<<<< HEAD
         // TODO: Complete this method
     	this.energy -= Params.WALK_ENERGY_COST;
     		
@@ -326,73 +328,111 @@ public abstract class Critter {
         		this.y_coord +=1;
         		break;
         	}
+=======
+        if (hasMoved == false) {
+        	this.energy -= Params.WALK_ENERGY_COST;
+
+        		switch(direction) {
+        		case 0:
+        			this.x_coord +=1;	//right
+        			break;
+        		case 1:
+        			this.x_coord +=1;	//diagonally up right
+        			this.y_coord -=1;
+        			break;
+        		case 2:
+        			this.y_coord -=1;	//up
+        			break;
+        		case 3:
+        			this.x_coord -=1;	//diagonally up left
+        			this.y_coord -=1;
+        			break;
+        		case 4:
+        			this.x_coord -=1;   //left
+        			break;
+        		case 5:
+        			this.x_coord -=1;	//diagonally down left
+        			this.y_coord +=1;
+        			break;
+        		case 6:
+        			this.y_coord +=1; 	//down
+        			break;
+        		case 7:
+        			this.x_coord +=1;	//diagonally down right
+        			this.y_coord +=1;
+        			break;
+        		}
+>>>>>>> 96f06b20c1b3a543faa2b78166586e70816e1688
         	
-        	//wrap around cases
-        	if(this.x_coord>Params.WORLD_WIDTH-1) {				
-        		this.x_coord -= Params.WORLD_WIDTH;
-        	}
-        	if(this.x_coord<0) {
-        		this.x_coord += Params.WORLD_WIDTH;
-        	}
-        	if(this.y_coord>Params.WORLD_HEIGHT-1) {
-        		this.y_coord -= Params.WORLD_HEIGHT;
-        	}
-        	if(this.y_coord<0) {
-        		this.y_coord += Params.WORLD_HEIGHT;
+        		//wrap around cases
+        		if(this.x_coord>Params.WORLD_WIDTH-1) {				
+        			this.x_coord -= Params.WORLD_WIDTH;
+        		}
+        		if(this.x_coord<0) {
+        			this.x_coord += Params.WORLD_WIDTH;
+        		}
+        		if(this.y_coord>Params.WORLD_HEIGHT-1) {
+        			this.y_coord -= Params.WORLD_HEIGHT;
+        		}
+        		if(this.y_coord<0) {
+        			this.y_coord += Params.WORLD_HEIGHT;
+        		}
+        		hasMoved = true;
         	}
     	}
 
     
 
     protected final void run(int direction) {
-        // TODO: Complete this method
-    	this.energy -= Params.RUN_ENERGY_COST;
+    	if (hasMoved == false) {
+    		this.energy -= Params.RUN_ENERGY_COST;
 
-        	switch(direction) {
-        	case 0:
-        		this.x_coord +=2;	//right
-        		break;
-        	case 1:
-        		this.x_coord +=2;	//diagonally up right
-        		this.y_coord -=2;
-        		break;
-        	case 2:
-        		this.y_coord -=2;	//up
-        		break;
-        	case 3:
-        		this.x_coord -=2;	//diagonally up left
-        		this.y_coord -=2;
-        		break;
-        	case 4:
-        		this.x_coord -=2;   //left
-        		break;
-        	case 5:
-        		this.x_coord -=2;	//diagonally down left
-        		this.y_coord +=2;
-        		break;
-        	case 6:
-        		this.y_coord +=2; 	//down
-        		break;
-        	case 7:
-        		this.x_coord +=2;	//diagonally down right
-        		this.y_coord +=2;
-        		break;
-        	}
+        		switch(direction) {
+        		case 0:
+        			this.x_coord +=2;	//right
+        			break;
+        		case 1:
+        			this.x_coord +=2;	//diagonally up right
+        			this.y_coord -=2;
+        			break;
+        		case 2:
+        			this.y_coord -=2;	//up
+        			break;
+        		case 3:
+        			this.x_coord -=2;	//diagonally up left
+        			this.y_coord -=2;
+        			break;
+        		case 4:
+        			this.x_coord -=2;   //left
+        			break;
+        		case 5:
+        			this.x_coord -=2;	//diagonally down left
+        			this.y_coord +=2;
+        			break;
+        		case 6:
+        			this.y_coord +=2; 	//down
+        			break;
+        		case 7:
+        			this.x_coord +=2;	//diagonally down right
+        			this.y_coord +=2;
+        			break;
+        		}
         	
-        	//wrap around cases
-        	if(this.x_coord>Params.WORLD_WIDTH-1) {				
-        		this.x_coord -= Params.WORLD_WIDTH;
-        	}
-        	if(this.x_coord<0) {
-        		this.x_coord += Params.WORLD_WIDTH;
-        	}
-        	if(this.y_coord>Params.WORLD_HEIGHT-1) {
-        		this.y_coord -= Params.WORLD_HEIGHT;
-        	}
-        	if(this.y_coord<0) {
-        		this.y_coord += Params.WORLD_HEIGHT;
-        	}
-        	hasMoved = true;
+        		//wrap around cases
+        		if(this.x_coord>Params.WORLD_WIDTH-1) {				
+        			this.x_coord -= Params.WORLD_WIDTH;
+        		}
+        		if(this.x_coord<0) {
+        			this.x_coord += Params.WORLD_WIDTH;
+        		}
+        		if(this.y_coord>Params.WORLD_HEIGHT-1) {
+        			this.y_coord -= Params.WORLD_HEIGHT;
+        		}
+        		if(this.y_coord<0) {
+        			this.y_coord += Params.WORLD_HEIGHT;
+        		}
+        		hasMoved = true;
+    		}
     	}
     
 
