@@ -295,7 +295,7 @@ public abstract class Critter {
     protected final void walk(int direction) {
         // TODO: Complete this method
     	this.energy -= Params.WALK_ENERGY_COST;
-
+    		
         	switch(direction) {
         	case 0:
         		this.x_coord +=1;	//right
