@@ -197,6 +197,7 @@ public class Main {
     				}
     			}
     		}
+    		/*if the word "stats" is the first argument to java*/
     		else if(input[0].equals("stats")) {
     			if(input.length==2) {
     				String inClass = input[1];
@@ -208,12 +209,14 @@ public class Main {
     					lCritter = Critter.getInstances(inClass);
     					Class<?>[] paramTypes = {List.class};
     					statClass = Class.forName(myPackage+"."+inClass);
+    					/*get the "runStats" method from the class user puts in as the second input*/
     					Method runStats = statClass.getMethod(name, paramTypes);
     					runStats.invoke(statClass, lCritter);
     				}
     				catch(InvalidCritterException|SecurityException|IllegalAccessException|InvocationTargetException |ClassNotFoundException|NoClassDefFoundError e) {
     					System.out.println("error processing: "+in);
     			}
+    				/*if no method can be found in the class, use the default "runStats" in the Critter class*/
     				catch(NoSuchMethodException e) {
     					Critter.runStats(lCritter);
     				}
@@ -225,6 +228,7 @@ public class Main {
     		    	System.out.println("error processing: "+in);
     			}
     		}
+    		/*if the word "clear" is the first argument to java*/
     		else if(input[0].equals("clear")) {
     			if(input.length!=1) {
     				System.out.println("error processing: "+in);
