@@ -75,13 +75,16 @@ public abstract class Critter {
 		Object instanceOfMyCritter = null;
 
 		try {
-			myCritter = Class.forName(myPackage+"."+critter_class_name); 	// Class object of specified name
+			/*Class object of specified name*/
+			myCritter = Class.forName(myPackage+"."+critter_class_name); 	
 		} catch (ClassNotFoundException e) {
 			throw new InvalidCritterException(critter_class_name);
 		}
 		try {
-			constructor = myCritter.getConstructor();		// No-parameter constructor object
-			instanceOfMyCritter = constructor.newInstance();	// Create new object using constructor
+			/*No-parameter constructor object*/
+			constructor = myCritter.getConstructor();		
+			/*Create new object using constructor*/
+			instanceOfMyCritter = constructor.newInstance();	
 		} catch (InstantiationException|IllegalAccessException|IllegalArgumentException|NoSuchMethodException e) {
 			throw new InvalidCritterException(critter_class_name);
 		}
@@ -90,10 +93,12 @@ public abstract class Critter {
 		}
 		Critter me = (Critter)instanceOfMyCritter;	
 		me.energy = Params.START_ENERGY;
+		/*critter will have a random (x,y) coordinate*/
 		me.x_coord = Critter.getRandomInt(Params.WORLD_WIDTH);
 		me.y_coord = Critter.getRandomInt(Params.WORLD_HEIGHT);
+		/*add the newly created critter to the population*/
 		population.add(me);
-        // TODO: Complete this method
+
     }
 
     /**
@@ -106,7 +111,7 @@ public abstract class Critter {
      */
     public static List<Critter> getInstances(String critter_class_name)
             throws InvalidCritterException {
-        // TODO: Complete this method
+        
     	List<Critter> sameKind = new ArrayList<Critter>();
     	Class<?> newCri;
     	try {
@@ -127,13 +132,17 @@ public abstract class Critter {
      * Clear the world of all critters, dead and alive
      */
     public static void clearWorld() {
-        // TODO: Complete this method
+      
     	population.clear();
     	babies.clear();
     }
-
+    
+    /**
+     * Execute one worldTimeStep, call do time step, solve fight between critters
+     * Refresh clover and balance energy
+     */
     public static void worldTimeStep() {
-        // TODO: Complete this method
+        /*call doTimeStep for every critter in the world*/
     	for (int i=0; i<population.size(); i++) {
     		population.get(i).hasMoved = false;
     		population.get(i).doTimeStep();
@@ -145,6 +154,7 @@ public abstract class Critter {
     			}
     		}
     	}
+    	/*Remove dead critter from the world*/
     	for (int i=0; i<population.size(); i++) {
     		population.get(i).energy -= Params.REST_ENERGY_COST;
     		if (population.get(i).energy <= 0) {
@@ -152,6 +162,7 @@ public abstract class Critter {
     			i--;
     		}
     	}
+    	/*create clover in each world time step*/
     	for (int i=0; i<Params.REFRESH_CLOVER_COUNT; i++) {
     		try {
 				createCritter("Clover");
@@ -159,14 +170,22 @@ public abstract class Critter {
 				e.printStackTrace();
 			}
     	}
+    	/*all all babies into the world*/ 
     	population.addAll(babies);
     	babies.clear();
     }
     
+    /**
+     * Solve encounter between critters
+     * @param a critter that is in fight
+     * @param b critter that is in fight
+     */
     private static void doEncounter(Critter a, Critter b) {
     	int currentx = a.x_coord;
     	int currenty = b.y_coord;
+    	/*if a wants to fight*/
     	boolean A = a.fight(b.toString());
+    	/*if b wants to fight*/
     	boolean B = b.fight(a.toString());
     	int fightA = 0;
     	int fightB = 0;
@@ -211,8 +230,11 @@ public abstract class Critter {
     	else return false;
     }
     
+    /**
+     * print out the world to the console
+     */
     public static void displayWorld() {
-        //set up the border
+        /*set up the border*/
     	String[][] world = new String[Params.WORLD_HEIGHT+2][Params.WORLD_WIDTH+2];
     	world[0][0]="+";
     	world[0][Params.WORLD_WIDTH+1]="+";
@@ -227,7 +249,7 @@ public abstract class Critter {
     		world[0][i] = "-";
     		world[Params.WORLD_HEIGHT+1][i]="-";
     	}
-    	//set each cell based on the location of the critter
+    	/*set each cell based on the location of the critter*/
     	for(int i=1;i<Params.WORLD_HEIGHT+1;i++) {
     		for(int j=1;j<Params.WORLD_WIDTH+1;j++) {
     			world[i][j]=" ";
