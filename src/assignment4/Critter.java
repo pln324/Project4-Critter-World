@@ -127,13 +127,18 @@ public abstract class Critter {
      * Clear the world of all critters, dead and alive
      */
     public static void clearWorld() {
-        // TODO: Complete this method
     	population.clear();
     	babies.clear();
     }
 
+    /**
+     * Makes every critter call their own doTimeStep. 
+     * Afterwards, doEncounter called for all critters 
+     * occupying the same space as another critter. Removes
+     * all dead critters and adds any new critters born in
+     * this step to the world.
+     */
     public static void worldTimeStep() {
-        // TODO: Complete this method
     	for (int i=0; i<population.size(); i++) {
     		population.get(i).hasMoved = false;
     		population.get(i).doTimeStep();
@@ -162,7 +167,14 @@ public abstract class Critter {
     	population.addAll(babies);
     	babies.clear();
     }
-    
+    /**
+     * Calls fight for both critters in the encounter, 
+     * and calculates the appropriate value for the 
+     * fight.
+     * 
+     * @param a First critter that is encountered
+     * @param b Second critter that is encountered
+     */
     private static void doEncounter(Critter a, Critter b) {
     	int currentx = a.x_coord;
     	int currenty = b.y_coord;
@@ -206,11 +218,21 @@ public abstract class Critter {
     	}
     }
 
+    /**
+     * returns true if two critters are in the same spot
+     * 
+     * @param a First critter
+     * @param b Second critter
+     * @return
+     */
     private static boolean collision(Critter a, Critter b) {
     	if (a.x_coord == b.x_coord && a.y_coord == b.y_coord && b.energy>0) return true;
     	else return false;
     }
     
+    /**
+     * Prints out the grid with all active critters
+     */
     public static void displayWorld() {
         //set up the border
     	String[][] world = new String[Params.WORLD_HEIGHT+2][Params.WORLD_WIDTH+2];
@@ -283,6 +305,7 @@ public abstract class Critter {
     public abstract boolean fight(String oponent);
     
     private boolean hasMoved=false;
+    
     /* a one-character long string that visually depicts your critter
      * in the ASCII interface */
     public String toString() {
@@ -293,6 +316,11 @@ public abstract class Critter {
         return energy;
     }
 
+    /**
+     * Allows critter to move one step in any direction, called in do time step
+     * 
+     * @param direction Indicates direction traveled
+     */
     protected final void walk(int direction) {
     	
         if (hasMoved == false) {
@@ -347,8 +375,11 @@ public abstract class Critter {
         	}
     	}
 
-    
-
+    /**
+     * Allows critter to move two spaces in any direction, called from doTimeStep
+     * 
+     * @param direction Indicates direction traveled
+     */
     protected final void run(int direction) {
     	if (hasMoved == false) {
     		this.energy -= Params.RUN_ENERGY_COST;
@@ -401,9 +432,15 @@ public abstract class Critter {
     		}
     	}
     
-
+    /**
+     * Allows critter to reproduce. Gives offspring appropriate 
+     * amount of energy and adds it to babies List. Checks to
+     * make sure parent has enough energy first.
+     * 
+     * @param offspring "Child" to be created if possible
+     * @param direction Space where child will be after creation (within one space of parent)
+     */
     protected final void reproduce(Critter offspring, int direction) {
-        // TODO: Complete this method
     	if(this.energy < Params.MIN_REPRODUCE_ENERGY) {
     		return;
     	}
