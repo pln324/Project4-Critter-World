@@ -294,6 +294,7 @@ public abstract class Critter {
     }
 
     protected final void walk(int direction) {
+    	
         if (hasMoved == false) {
         	this.energy -= Params.WALK_ENERGY_COST;
 
@@ -327,6 +328,7 @@ public abstract class Critter {
         			this.y_coord +=1;
         			break;
         		}
+
         	
         		//wrap around cases
         		if(this.x_coord>Params.WORLD_WIDTH-1) {				

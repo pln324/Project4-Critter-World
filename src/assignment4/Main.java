@@ -100,7 +100,11 @@ public class Main {
     }
 
     /* Do not alter the code above for your submission. */
-
+    
+    /**
+     * Interpreting the user command input
+     * @param kb - user command input
+     */
     private static void commandInterpreter(Scanner kb){
         //TODO Implement this method
     	boolean done = false;
@@ -108,8 +112,11 @@ public class Main {
     	while(!done) {
     		System.out.print("critters>");
     		in = kb.nextLine();
-    		String[] input = in.split(" "); //separate user input to parts	
+    		/*separate user input to parts*/	
+    		String[] input = in.split(" "); 
+    		/*if the word "quit" is the first argument to java*/
     		if(input[0].equals("quit")) {
+    			/*error if input is more than the one word "quit"*/
     			if(input.length>1) {
     				System.out.println("error processing: " + in);
     			}
@@ -117,25 +124,30 @@ public class Main {
     				done = true;
     			}
     		}
+    		/*if the word "show" is the first argument to java*/
     		else if(input[0].equals("show")){
     			if(input.length>1) {
     				System.out.println("error processing: " + in);
     			}
     			else {
+    				/*call displayWorld method in Critter class to show the world*/
     				Critter.displayWorld();
     			}
     		}
+    		/*if the word "step" is the first argument to java*/
     		else if(input[0].equals("step")) {
     			if(input.length>2) {
     				System.out.println("error processing: "+in);
     			}
-    			
+    			/*if no second argument provided, take one step*/
     			else if(input.length==1) {
     					Critter.worldTimeStep();
     				}
     			else if(input.length==2){
     					try {
+    						/*To get the step count, parse the second argument to java*/
     						int loop = Integer.parseInt(input[1]);
+    						/*call worldTimeStep the number of times the user put in the second argument*/
     						for(int i=0;i<loop;i++) {
     						Critter.worldTimeStep();
     						}
@@ -146,6 +158,7 @@ public class Main {
     				}
     			
     		}
+    		/*if the word "seed" is the first argument to java*/
     		else if(input[0].equals("seed")) {
     			if(input.length>2) {
     				System.out.println("error processing: "+ in);
@@ -160,6 +173,7 @@ public class Main {
     				}
     			}
     		}
+    		/*if the word "create" is the first argument to java*/
     		else if(input[0].equals("create")) {
     			if(input.length>3|input.length<2) {
     				System.out.println("error processing: "+in);
@@ -169,6 +183,8 @@ public class Main {
     					if(input.length==2) {
     						Critter.createCritter(input[1]);
     					}
+    					/*create the type of critter based on the second user input
+    					 *create it the number of times based on the third user input*/
     					else if(input.length == 3) {
     						int loop = Integer.parseInt(input[2]);
     						for(int i=0;i<loop;i++) {
