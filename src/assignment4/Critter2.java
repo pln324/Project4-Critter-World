@@ -12,6 +12,9 @@ import java.util.List;
  */
 public class Critter2 extends Critter {
 	
+	/**
+	 * This critter is represented by "2"
+	 */
 	@Override
 	public String toString() {
 		return "2";
@@ -20,10 +23,18 @@ public class Critter2 extends Critter {
 	private int sex;
 	private int dir;
 	
+	/**
+	 * constructor to give every Critter2 a unique sex and dir
+	 */
 	public Critter2() {
 		sex = Critter.getRandomInt(2);
 		dir = Critter.getRandomInt(8);
 	}
+	
+	/**
+	 * if Critter2 is female, walk; if energy above 80, reproduce
+	 * if Critter2 is male, run
+	 */
 	@Override
 	public void doTimeStep() {
 		if(sex==0) {
@@ -39,13 +50,15 @@ public class Critter2 extends Critter {
 		}
 		
 		dir = Critter.getRandomInt(8);
-		// TODO Auto-generated method stub
 		
 	}
-
+	
+	/**
+	 * if opponent is a Critter2, no fighting
+	 * if not, fight
+	 */
 	@Override
 	public boolean fight(String oponent) {
-		// TODO Auto-generated method stub
 		if(oponent=="2"){
 			return false;
 		}
@@ -54,6 +67,10 @@ public class Critter2 extends Critter {
 		}
 	}
 	
+	/**
+	 * Stats show the count of total Critter2, male Critter2, and female Critter2
+	 * @param critter2 run stats for Critter2
+	 */
 	 public static void runStats(List<Critter> critter2) {
 		 int M=0;
 		 int F=0;
